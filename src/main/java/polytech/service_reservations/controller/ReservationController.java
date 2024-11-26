@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import polytech.service_reservations.dto.ReservationEvent;
+import polytech.service_reservations.kafka.KafkaProducer;
 import polytech.service_reservations.model.Reservation;
 import polytech.service_reservations.service.ReservationService;
 
@@ -21,6 +23,9 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
 
     @GetMapping
     public List<Reservation> getAllReservations() {
@@ -40,11 +45,53 @@ public class ReservationController {
 
     @PostMapping
     public Reservation createReservation(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+        Reservation savedReservation = reservationService.createReservation(reservation);
+
+        if (savedReservation != null && savedReservation.getIdReservation() != null) {
+            // Construire l'événement pour Kafka
+            ReservationEvent event = new ReservationEvent(
+                    savedReservation.getIdVoyageur(),
+                    savedReservation.getIdReservation(),
+                    savedReservation.getDateArrive(),
+                    savedReservation.getDateDepart(),
+                    false,
+                    false
+            );
+            kafkaProducer.sendEvaluationEvent(event);
+            System.out.println("Notification envoyée pour la réservation ID : " + savedReservation.getIdReservation());
+        } else {
+            ReservationEvent event = new ReservationEvent(
+                    reservation.getIdVoyageur(),
+                    reservation.getIdReservation(),
+                    reservation.getDateArrive(),
+                    reservation.getDateDepart(),
+                    true,
+                    false
+            );
+            kafkaProducer.sendEvaluationEvent(event);
+            System.err.println("La réservation n'a pas pu être créée. Aucun événement envoyé.");
+        }
+
+        return savedReservation;
     }
 
     @DeleteMapping("/{id}")
     public void deleteReservation(@PathVariable Long id) {
+        Reservation reservation = reservationService.getReservationById(id).orElse(null);
+        if (reservation == null) {
+            System.err.println("La réservation n'existe pas.");
+            return;
+        }
         reservationService.deleteReservation(id);
+
+        ReservationEvent event = new ReservationEvent(
+                reservation.getIdVoyageur(),
+                reservation.getIdReservation(),
+                reservation.getDateArrive(),
+                reservation.getDateDepart(),
+                false,
+                true
+        );
+        kafkaProducer.sendEvaluationEvent(event);
     }
 }
