@@ -51,7 +51,7 @@ public class ReservationController {
             // Construire l'événement pour Kafka
             ReservationEvent event = new ReservationEvent(
                     savedReservation.getIdVoyageur(),
-                    savedReservation.getIdReservation(),
+                    savedReservation.getIdEmplacement(),
                     savedReservation.getDateArrive(),
                     savedReservation.getDateDepart(),
                     false,
@@ -62,7 +62,7 @@ public class ReservationController {
         } else {
             ReservationEvent event = new ReservationEvent(
                     reservation.getIdVoyageur(),
-                    reservation.getIdReservation(),
+                    reservation.getIdEmplacement(),
                     reservation.getDateArrive(),
                     reservation.getDateDepart(),
                     true,
@@ -86,7 +86,7 @@ public class ReservationController {
 
         ReservationEvent event = new ReservationEvent(
                 reservation.getIdVoyageur(),
-                reservation.getIdReservation(),
+                reservation.getIdEmplacement(),
                 reservation.getDateArrive(),
                 reservation.getDateDepart(),
                 false,
