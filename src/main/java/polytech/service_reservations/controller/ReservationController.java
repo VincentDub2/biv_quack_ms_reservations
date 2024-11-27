@@ -80,6 +80,11 @@ public class ReservationController {
         return savedReservation;
     }
 
+    @GetMapping("/emplacement/{id}")
+    public List<Reservation> getReservationByIdEmplacement(@PathVariable Long id) {
+        return reservationService.getReservationByIdEmplacement(id);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteReservation(@PathVariable Long id) {
         Reservation reservation = reservationService.getReservationById(id).orElse(null);

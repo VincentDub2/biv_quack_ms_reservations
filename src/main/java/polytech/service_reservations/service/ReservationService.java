@@ -53,6 +53,14 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    /**
+     * Recuperate les reservations par idEmplacement
+     * @param id
+     */
+    public List<Reservation> getReservationByIdEmplacement(Long id) {
+        return reservationRepository.findByIdEmplacement(id);
+    }
+
     // Supprime une réservation par son id
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
