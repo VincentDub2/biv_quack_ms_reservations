@@ -46,7 +46,7 @@ public class ReservationService {
      * @return List<Reservation>
      */
     public List<Reservation> getReservationByIdUser(Long idUser) {
-        return reservationRepository.findByIdClient(idUser);
+        return reservationRepository.findByIdVoyageur(idUser);
     }
     // Crée une nouvelle réservation
     public Reservation createReservation(Reservation reservation) {
