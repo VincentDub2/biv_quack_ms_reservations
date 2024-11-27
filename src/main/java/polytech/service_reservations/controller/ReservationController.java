@@ -43,6 +43,11 @@ public class ReservationController {
         return reservationService.getReservationById(id);
     }
 
+    @GetMapping("/user/{id}")
+    public List<Reservation> getReservationByIdUser(@PathVariable Long id) {
+        return reservationService.getReservationByIdUser(id);
+    }
+
     @PostMapping
     public Reservation createReservation(@RequestBody Reservation reservation) {
         Reservation savedReservation = reservationService.createReservation(reservation);

@@ -10,4 +10,5 @@ import polytech.service_reservations.model.Reservation;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByIdEmplacement(Long idEmplacement);
+    List<Reservation> findByIdClient(Long idClient);
 }

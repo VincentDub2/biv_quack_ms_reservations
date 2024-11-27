@@ -39,7 +39,15 @@ public class ReservationService {
     public Optional<Reservation> getReservationById(Long id) {
         return reservationRepository.findById(id);
     }
-    
+
+    /**
+     * Recupère les réservations par idUser
+     * @param idUser
+     * @return List<Reservation>
+     */
+    public List<Reservation> getReservationByIdUser(Long idUser) {
+        return reservationRepository.findByIdClient(idUser);
+    }
     // Crée une nouvelle réservation
     public Reservation createReservation(Reservation reservation) {
         return reservationRepository.save(reservation);

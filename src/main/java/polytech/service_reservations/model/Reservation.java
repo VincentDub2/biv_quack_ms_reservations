@@ -10,27 +10,25 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "reservation", schema = "public")
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idreservation")
     private Long idReservation;
 
-    @Column(name = "idemplacement", nullable = false)
+    @Column(nullable = false)
     private Long idEmplacement;
 
-    @Column(name = "idvoyageur", nullable = false)
+    @Column(nullable = false)
     private Long idVoyageur;
 
-    @Column(name = "datearrive", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime dateArrive;
 
-    @Column(name = "datedepart", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime dateDepart;
 
-    @Column(name = "prix", nullable = false)
+    @Column(nullable = false)
     private Double prix;
 
     public Reservation() {}
